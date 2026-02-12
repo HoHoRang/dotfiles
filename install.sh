@@ -10,29 +10,43 @@ fi
 echo "Installing essential tools..."
 brew install stow
 
-# 3. Oh My Zsh 설치
+# 3. Ghostty 터미널 설치 (GUI 앱은 --cask 사용)
+if ! brew list --cask ghostty &> /dev/null; then
+    echo "Installing Ghostty terminal..."
+    brew install --cask ghostty
+fi
+
+# 4. Oh My Zsh 설치
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
-# 4. Powerlevel10k 테마 다운로드
+# 5. Powerlevel10k 테마 다운로드
 ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
 if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
     echo "Downloading Powerlevel10k theme..."
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 fi
 
-# 5. 기존 설정 파일 삭제 (stow 충돌 방지)
+# 6. 기존 설정 파일 삭제 (stow 충돌 방지)
 echo "Removing existing config files to avoid conflicts..."
-rm -rf ~/.zshrc ~/.p10k.zsh ~/.gitconfig ~/.gitconfig-aiv ~/.gitignore_global ~/.stCommitMsg
+# git
+rm -rf ~/.gitconfig ~/.gitconfig-aiv ~/.gitignore_global ~/.stCommitMsg
+# zsh
+rm -rf ~/.zshrc ~/.p10k.zsh
+# ghostty
+rm -rf ~/.config/ghostty/config
 
-# 6. Stow를 사용하여 설정 연결
+# 7. Stow를 사용하여 설정 연결
 echo "Applying configurations with Stow..."
 cd ~/dotfiles
 stow git
 stow zsh
+stow ghostty
 
 echo "------------------------------------------"
-echo "✅ 설치 완료! 터미널을 다시 실행하거나 'source ~/.zshrc'를 입력하세요."
+echo "✅ 모든 설치와 설정이 완료되었습니다!"
+echo "1. Ghostty를 실행하거나 재시작하세요."
+echo "2. 터미널 폰트가 깨진다면 Nerd Font를 설치해야 합니다."
 echo "------------------------------------------"
