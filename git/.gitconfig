@@ -1,0 +1,9 @@
+[user]
+	name = jiwoong
+	email = wisehero7@gmail.com
+[core]
+	excludesfile = ~/.gitignore_global
+[commit]
+	template = ~/.stCommitMsg
+[includeIf "hasconfig:remote.*.url:git@bitbucket.org-aiv:**/**"]
+	path = ~/.gitconfig-aiv
