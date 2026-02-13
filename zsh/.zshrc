@@ -108,13 +108,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 eval $(/opt/homebrew/bin/brew shellenv)
-alias rcraw='ssh -i ~/.ssh/cloud9 ubuntu@ec2-3-36-44-69.ap-northeast-2.compute.amazonaws.com'
-alias rmongo='ssh -i ~/.ssh/missgo-cloud9.pem ubuntu@ec2-3-38-144-190.ap-northeast-2.compute.amazonaws.com'
-alias rtest='ssh -i ~/.ssh/landing ec2-user@ec2-3-37-201-33.ap-northeast-2.compute.amazonaws.com'
-alias rstage='ssh -i ~/.ssh/landing ec2-user@ec2-3-35-6-180.ap-northeast-2.compute.amazonaws.com'
-alias rlive='ssh -i ~/.ssh/landing ec2-user@ec2-3-39-33-246.ap-northeast-2.compute.amazonaws.com'
-alias tmysql='ssh -i ~/.ssh/landing -L 3307:localhost:3307 ec2-user@ec2-3-36-11-234.ap-northeast-2.compute.amazonaws.com -N'
-alias tmongodb='ssh -i ~/.ssh/missgo-cloud9.pem -L 27019:localhost:27017 ubuntu@ec2-3-38-144-190.ap-northeast-2.compute.amazonaws.com -N'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
