@@ -130,3 +130,9 @@ export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 
 # aliases
 alias brewu="brew upgrade; brew cleanup"
+
+# PATH
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21
+export PATH="$JAVA_HOME/bin:$PATH"
+
+
