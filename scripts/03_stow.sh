@@ -7,32 +7,31 @@ DOTFILES="$HOME/dotfiles"
 
 echo "🔗 [3/5] Stow 심볼릭 링크 설정 시작..."
 
-# 각 패키지별 충돌 파일 제거 후 stow
-# 형식: "패키지명 | 제거할 실제 경로들..."
-declare -A CONFLICTS=(
-  ["git"]="$HOME/.gitconfig $HOME/.gitconfig-aiv $HOME/.gitignore_global $HOME/.stCommitMsg"
-  ["zsh"]="$HOME/.zshrc $HOME/.p10k.zsh"
-  ["ghostty"]="$HOME/.config/ghostty/config"
-  ["nvim"]="$HOME/.config/nvim"
-  ["claude"]="$HOME/.claude"
-)
-
 cd "$DOTFILES"
 
-for pkg in "${!CONFLICTS[@]}"; do
-  pkg_dir="$DOTFILES/$pkg"
-  if [ ! -d "$pkg_dir" ]; then
+stow_pkg() {
+  local pkg=$1
+  shift
+  local targets=("$@")
+
+  if [ ! -d "$DOTFILES/$pkg" ]; then
     echo "  → [$pkg] 디렉토리 없음, 건너뜀"
-    continue
+    return
   fi
 
   echo "  → [$pkg] 충돌 파일 제거 중..."
-  for target in ${CONFLICTS[$pkg]}; do
+  for target in "${targets[@]}"; do
     rm -rf "$target"
   done
 
   echo "  → [$pkg] stow 적용 중..."
   stow "$pkg"
-done
+}
+
+stow_pkg git     "$HOME/.gitconfig" "$HOME/.gitconfig-aiv" "$HOME/.gitignore_global" "$HOME/.stCommitMsg"
+stow_pkg zsh     "$HOME/.zshrc" "$HOME/.p10k.zsh"
+stow_pkg ghostty "$HOME/.config/ghostty"
+stow_pkg nvim    "$HOME/.config/nvim"
+stow_pkg claude  "$HOME/.claude"
 
 echo "✅ Stow 심볼릭 링크 설정 완료"
