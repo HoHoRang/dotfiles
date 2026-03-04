@@ -5,11 +5,25 @@ return {
     lazy = false,
     opts = {
       image = {
-        enabled = true, -- 여기서 true로 설정해야 합니다!
+        enabled = true,
       },
-      -- 에디터 성능을 위해 다른 유용한 기능들도 켜줍니다
-      explorer = { enabled = true },
-      picker = { enabled = true },
+      explorer = {
+        enabled = true,
+      },
+      picker = {
+        enabled = true,
+        sources = {
+          explorer = {
+            hidden = true, -- explorer 사이드바에서 .파일 표시
+          },
+          files = {
+            hidden = true, -- 파일 검색(<leader>ff)에서 .파일 포함
+          },
+          grep = {
+            hidden = true, -- grep 검색에서 .파일 포함
+          },
+        },
+      },
     },
   },
 }

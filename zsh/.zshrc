@@ -131,8 +131,28 @@ export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 # aliases
 alias brewu="brew upgrade; brew cleanup"
 
+# brew install/uninstall 시 Brewfile 자동 갱신
+brew() {
+  command brew "$@"
+
+  local exit_code=$?
+  if [[ $exit_code -ne 0 ]]; then
+    return $exit_code
+  fi
+
+  if [[ "$1" == "install" || "$1" == "uninstall" ]]; then
+    local brewfile="$HOME/dotfiles/Brewfile"
+    if [ -d "$HOME/dotfiles" ]; then
+      command brew bundle dump --force --file="$brewfile" 2>/dev/null
+      echo "🍺 Brewfile 업데이트됨: $brewfile"
+      echo "   커밋하려면: cd ~/dotfiles && git add Brewfile && git commit -m 'chore: update Brewfile'"
+    fi
+  fi
+}
+
 # PATH
 export JAVA_HOME=/opt/homebrew/opt/openjdk@21
 export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$HOME/.claude/bin:$HOME/.local/bin:$PATH"
 
 

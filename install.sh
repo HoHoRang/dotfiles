@@ -1,56 +1,57 @@
 #!/bin/bash
+# install.sh - dotfiles 설치 메인 스크립트
+# 각 단계는 scripts/ 디렉토리의 개별 스크립트로 관리됨
 
-# 1. Homebrew 설치 확인 및 설치
-if ! command -v brew &>/dev/null; then
-  echo "Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
+set -e
 
-# 2. 필수 도구 및 폰트 설치
-echo "Installing essential tools and fonts..."
-brew install stow nvim
-brew install --cask font-jetbrains-mono-nerd-font
+DOTFILES="$HOME/dotfiles"
+SCRIPTS="$DOTFILES/scripts"
 
-# 3. Ghostty 터미널 설치 (GUI 앱은 --cask 사용)
-if ! brew list --cask ghostty &>/dev/null; then
-  echo "Installing Ghostty terminal..."
-  brew install --cask ghostty
-fi
+# 사용법 출력
+usage() {
+  echo "Usage: $0 [step]"
+  echo ""
+  echo "  (인자 없음)   전체 설치 실행"
+  echo "  homebrew      01_homebrew.sh - Homebrew 및 패키지 설치"
+  echo "  shell         02_shell.sh    - Oh My Zsh, Powerlevel10k"
+  echo "  stow          03_stow.sh     - dotfiles 심볼릭 링크"
+  echo "  claude        04_claude.sh   - Claude Code 설치"
+  echo ""
+  echo "Example:"
+  echo "  ./install.sh            # 전체 실행"
+  echo "  ./install.sh stow       # stow 단계만 재실행"
+  echo "  ./install.sh claude     # Claude Code만 설치"
+}
 
-# 4. Oh My Zsh 설치
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  echo "Installing Oh My Zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
+# 개별 스크립트 실행 함수
+run_step() {
+  local script="$SCRIPTS/$1"
+  if [ ! -f "$script" ]; then
+    echo "❌ 스크립트를 찾을 수 없음: $script"
+    exit 1
+  fi
+  bash "$script"
+}
 
-# 5. Powerlevel10k 테마 다운로드
-ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
-if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
-  echo "Downloading Powerlevel10k theme..."
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-fi
+# 인자에 따라 특정 단계만 실행
+case "${1:-}" in
+  homebrew) run_step "01_homebrew.sh" ;;
+  shell)    run_step "02_shell.sh" ;;
+  stow)     run_step "03_stow.sh" ;;
+  claude)   run_step "04_claude.sh" ;;
 
-# 6. 기존 설정 파일 삭제 (stow 충돌 방지)
-echo "Removing existing config files to avoid conflicts..."
-# git
-rm -rf ~/.gitconfig ~/.gitconfig-aiv ~/.gitignore_global ~/.stCommitMsg
-# zsh
-rm -rf ~/.zshrc ~/.p10k.zsh
-# ghostty
-rm -rf ~/.config/ghostty/config
-# neovim
-rm -rf ~/.config/nvim
-
-# 7. Stow를 사용하여 설정 연결
-echo "Applying configurations with Stow..."
-cd ~/dotfiles
-stow git
-stow zsh
-stow ghostty
-stow nvim
-
-echo "------------------------------------------"
-echo "✅ 모든 설치와 설정이 완료되었습니다!"
-echo "1. Ghostty를 실행하거나 재시작하세요."
-echo "2. 터미널 폰트가 깨진다면 Nerd Font를 설치해야 합니다."
-echo "------------------------------------------"
+  help|--help|-h) usage ;;
+  "")
+    # 전체 실행
+    run_step "01_homebrew.sh"
+    run_step "02_shell.sh"
+    run_step "03_stow.sh"
+    run_step "04_claude.sh"
+    run_step "05_finish.sh"
+    ;;
+  *)
+    echo "❌ 알 수 없는 단계: $1"
+    usage
+    exit 1
+    ;;
+esac
