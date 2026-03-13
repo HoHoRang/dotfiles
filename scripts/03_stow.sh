@@ -28,11 +28,12 @@ stow_pkg() {
   stow "$pkg"
 }
 
-stow_pkg git        "$HOME/.gitconfig" "$HOME/.gitconfig-aiv" "$HOME/.gitignore_global" "$HOME/.stCommitMsg"
-stow_pkg zsh        "$HOME/.zshrc" "$HOME/.p10k.zsh"
-stow_pkg ghostty    "$HOME/.config/ghostty"
-stow_pkg nvim       "$HOME/.config/nvim"
-stow_pkg claude     "$HOME/.claude"
+stow_pkg git "$HOME/.gitconfig" "$HOME/.gitconfig-aiv" "$HOME/.gitignore_global" "$HOME/.stCommitMsg"
+stow_pkg zsh "$HOME/.zshrc" "$HOME/.p10k.zsh"
+stow_pkg ghostty "$HOME/.config/ghostty"
+stow_pkg nvim "$HOME/.config/nvim"
+stow_pkg claude "$HOME/.claude"
 stow_pkg hammerspoon "$HOME/.hammerspoon"
+stow_pkg tmux "$HOME/.tmux.conf"
 
 echo "✅ Stow 심볼릭 링크 설정 완료"

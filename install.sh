@@ -16,6 +16,7 @@ usage() {
   echo "  shell         02_shell.sh    - Oh My Zsh, Powerlevel10k"
   echo "  stow          03_stow.sh     - dotfiles 심볼릭 링크"
   echo "  claude        04_claude.sh   - Claude Code 설치"
+  echo "  tmux          05_tmux.sh     - Tmux Plugin 설치"
   echo ""
   echo "Example:"
   echo "  ./install.sh            # 전체 실행"
@@ -35,23 +36,25 @@ run_step() {
 
 # 인자에 따라 특정 단계만 실행
 case "${1:-}" in
-  homebrew) run_step "01_homebrew.sh" ;;
-  shell)    run_step "02_shell.sh" ;;
-  stow)     run_step "03_stow.sh" ;;
-  claude)   run_step "04_claude.sh" ;;
+homebrew) run_step "01_homebrew.sh" ;;
+shell) run_step "02_shell.sh" ;;
+stow) run_step "03_stow.sh" ;;
+claude) run_step "04_claude.sh" ;;
+tmux) run_step "05_tmux.sh" ;;
 
-  help|--help|-h) usage ;;
-  "")
-    # 전체 실행
-    run_step "01_homebrew.sh"
-    run_step "02_shell.sh"
-    run_step "03_stow.sh"
-    run_step "04_claude.sh"
-    run_step "05_finish.sh"
-    ;;
-  *)
-    echo "❌ 알 수 없는 단계: $1"
-    usage
-    exit 1
-    ;;
+help | --help | -h) usage ;;
+"")
+  # 전체 실행
+  run_step "01_homebrew.sh"
+  run_step "02_shell.sh"
+  run_step "03_stow.sh"
+  run_step "04_claude.sh"
+  run_step "05_tmux.sh"
+  run_step "06_finish.sh"
+  ;;
+*)
+  echo "❌ 알 수 없는 단계: $1"
+  usage
+  exit 1
+  ;;
 esac
