@@ -1,3 +1,6 @@
+-- escape -> english 모드 전환
+require("escape_to_eng")
+
 -- foundation_remapping 모듈 로드
 local FRemap = require("foundation_remapping")
 
