@@ -17,3 +17,4 @@ function convert_to_eng_with_esc()
 end
 
 esc_bind = hs.hotkey.new({}, "escape", convert_to_eng_with_esc):enable()
+hs.hotkey.bind({ "ctrl" }, "[", convert_to_eng_with_esc)
